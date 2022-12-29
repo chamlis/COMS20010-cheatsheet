@@ -1,0 +1,182 @@
+\documentclass[twocolumn,a4paper,8pt]{extarticle}
+\usepackage[hmargin=1cm,bottom=1.5cm,top=1cm]{geometry}
+\usepackage{algorithm2e}
+\usepackage{amsmath}
+
+\pagenumbering{gobble}
+
+\SetKwInOut{Input}{Input}
+\SetKwInOut{Output}{Output}
+\SetKwFor{uFor}{for}{do}{}
+\SetKwFor{uForEach}{foreach}{do}{}
+\SetKwFor{uWhile}{while}{do}{}
+\SetKwProg{Procedure}{Procedure}{}{}
+\RestyleAlgo{ruled}
+\DontPrintSemicolon
+
+\begin{document}
+
+\begin{algorithm}
+  \caption{Depth-First Search}
+  \Input{Graph \(G = (V,E)\), vertex \(v \in V\)}
+  \Output{List of vertices in \(v\)'s component}
+
+  Number the vertices of \(G\) as \(v_1, \dots, v_n\)\;
+  Let \(\text{explored}[i] \gets 0\) for all \(i \in [n]\)\;
+  \Procedure{helper(\(v_i\))}{
+    \uIf{\(\text{explored}[i] = 0\)}{
+      Set \(\text{explored}[i] \gets 1\)\;
+      \uFor{\(v_j\) adjacent to \(v_i\)}{
+        \uIf{\(\text{explored}[j] = 0\)}{
+          Call helper(\(v_j\))\;
+        }
+      }
+    }
+  }
+
+  Call helper(\(v\))\;
+  Return \([v_i : \text{explored}[i] = 1]\) (in some order)\;
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Breadth-First Search}
+  \Input{Graph \(G = (V,E)\), vertex \(v \in V\)}
+  \Output{\(d(v, y)\) for all \(y \in V\) and ``a way of finding
+    shortest paths''}
+
+  Number the vertices of \(G\) as \(v_1, \dots, v_n\)\;
+  Let \(\text{L}[i] \gets \infty\) for all \(i \in [n]\)\;
+  Let \(\text{L}[1] \gets 0\), \(\text{pred}[1] \gets \text{None}\)\;
+  Let \texttt{queue} be a queue containing all tuples \((v, v_j)\)
+  with \({v, v_j} \in E\)\;
+  \uWhile{\texttt{queue} is not empty}{
+    Remove front tuple \((v_i, v_j)\) from \texttt{queue}\;
+    \uIf{\(\text{L}[j] = \infty\)}{
+      Add \((v_j, v_k)\) to \texttt{queue} for all \({v_j, v_k} \in E,
+      k \neq i\)\;
+      Set \(\text{L}[j] \gets \text{L}[i] + 1\), \(text{pred}[j] = i\)\;
+    }
+  }
+  Return L and pred\;
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Dijkstra's}
+  \Input{Weighted graph \(G = ((V,E), w)\), \(v \in V\)}
+  \Output{\(d(v, y)\) for all \(y \in V\)}
+
+  Number the vertices of \(G\) as \(v_1, \dots, v_n\)\;
+  \(\texttt{queue} \gets \texttt{StartQueue}(n)\)\;
+  \uForEach{\(i = 1\) to \(n\)}{
+    \(\text{dist}[i] \gets \infty\)\;
+    Call \texttt{queue.Insert}(\(v_i\), \(\infty\))\;
+  }
+  Call \texttt{queue.ChangeKey}(\(v_1\), \(0\))\;
+
+  \Repeat{\texttt{queue} is not empty}{
+    \(v_i \gets \texttt{queue.Extract}()\)\;
+    \uForEach{\((v_i, v_j) \in E\)}{
+      \(\texttt{dist}[j] \gets \min{} \{\texttt{dist}[j], \texttt{dist}[i]
+        + w(i, j)\}\)\;
+      Call \texttt{Queue.ChangeKey}(\(v_j\), \texttt{dist}[j])\;
+    }
+  }
+
+  Return \texttt{dist}\;
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Prim's}
+  \Input{Connected weighted graph \(G = ((V,E), w)\)}
+  \Output{A minimum spanning tree for \(G\)}
+
+  Number the vertices of \(G\) arbitrarily as \(v_1, \dots, v_n\)\;
+  Let \(\text{L}[i] \gets \infty\) for all \(i \in [n]\)\; Let
+  \(\text{L}[1] \gets 0\), \(\text{pred}[1] \gets \text{None}\)\; Let
+  \texttt{queue} be a length-\(|E|\) priority queue containing all
+  tuples \((v, v_j)\) with \({v, v_j} \in E\), using their edge
+  weights as priorities\;
+
+  \uWhile{\texttt{queue} is not empty}{
+    Remove front tuple \((v_i, v_j)\) from \texttt{queue}\;
+    \uIf{\(\text{L}[j] = \infty\)}{
+      Add \((v_j, v_k)\) to \texttt{queue} for all \({v_j, v_k} \in E,
+      k \neq i\)\;
+      Set \(\text{L}[j] \gets \text{L}[i] + 1\), \(text{pred}[j] = i\)\;
+    }
+  }
+  Return pred\;
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Kruskal's}
+  \Input{Connected weighted graph \(G = ((V,E), w)\) in adjacency list
+  form}
+  \Output{A minimum spanning tree for \(G\)}
+
+  Sort the edges by weight as \(e_1, \dots, e_m\), with \(w(e_1) \leq
+  \cdots \leq w(e_m)\)\;
+  Let \(T \gets (V, \emptyset)\) be the empty tree on \(V\)\;
+  Let \(C \gets \texttt{MakeUnionFind}(V)\)\;
+
+  \uFor{\(i = 1\) to \(m\)}{
+    Write \(e_i \rightarrow \{u_i, v_i\}\)\;
+    \uIf{\(C\texttt{.FindSet}(u_i) \neq C\texttt{.FindSet}(v_i)\)}{
+      Let \(T \gets T + e_i\)\;
+      Call C\texttt{.Union}(\(u_i\), \(v_i\))\;
+    }
+  }
+
+  Return \(T\)\;
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Ford-Fulkerson}
+  \Input{A (weakly connected) flow network \((G, c, s, t)\)}
+  \Output{A flow \(f\) with no augmenting paths}
+
+  Construct the flow \(f\) with \(f(e) = 0\) for all \(e \in E(G)\)\;
+  Construct the residual graph \(G_f\)\;
+  \uWhile{\(G_f\) contains a path \(P\) from \(s\) to \(t\)}{
+    Find \(P\) using depth-first (or breadth-first) search\;
+    Update \(f \gets \texttt{Push}(G, c, s, t, f, P)\)\;
+    Update \(G_f\) on the edges of \(P\)\;
+  }
+
+  Return \(f\)\;
+\end{algorithm}
+
+\begin{algorithm}
+  \caption{Bellman-Ford}
+  \Input{A weighted digraph \(G = ((V, E), w)\) with no negative-weight
+    cycles and vertices \(s, t \in V(G)\)}
+  \Output{A shortest path from \(s\) to \(t\), or \texttt{None} if
+    none exists}
+
+  Let \(\texttt{dist}[v] \gets \infty\) for all \(v \in V \ t\),
+  \(\texttt{dist}[t] \gets 0\)\;
+  Let \(\texttt{edge}[v] \gets \texttt{None}\) for all \(v \in V\)\;
+  \uFor{\(i = 1\) to \(|V| - 1\)}{
+    \uFor{\(u\) in \(V\)}{
+      \uFor{\(v\) in \(N^+(u)\)}{
+        \uIf{\(\texttt{dist}[u] > w(u, v) + \texttt{dist}[v]\)}{
+          \(\texttt{dist}[u] \gets w(u, v) + \texttt{dist}[v]\) and
+          \(\texttt{edge}[u] \gets (u, v)\)\;
+        }
+      }
+    }
+  }
+
+  \(v \gets s\)\;
+  \uWhile{\(v \neq t\)}{
+    \eIf{\(\texttt{edge}[v] = \texttt{None}\)}{
+      Return \texttt{None}\;
+    }{
+      Writing \(\texttt{edge}[v] = (v, w)\), output \((v, w)\) and set
+      \(v \gets w\)\;
+    }
+  }
+
+\end{algorithm}
+
+\end{document}
