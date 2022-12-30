@@ -171,7 +171,7 @@ n_0 : f(n) \geq cg(n) \\
   \Output{A shortest path from \(s\) to \(t\), or \texttt{None} if
     none exists}
 
-  Let \(\texttt{dist}[v] \gets \infty\) for all \(v \in V \ t\),
+  Let \(\texttt{dist}[v] \gets \infty\) for all \(v \in V \setminus t\),
   \(\texttt{dist}[t] \gets 0\)\;
   Let \(\texttt{edge}[v] \gets \texttt{None}\) for all \(v \in V\)\;
   \uFor{\(i = 1\) to \(|V| - 1\)}{
