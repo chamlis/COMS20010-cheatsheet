@@ -16,6 +16,24 @@
 
 \begin{document}
 
+\section{Asymptotic Complexity}
+
+\begin{align*}
+f(n) \in O(g(n)) &\iff \exists C, n_0 : \forall n \geq n_0 : f(n)
+\leq Cg(n) \\
+f(n) \in \Omega(g(n)) &\iff \exists c, n_0 : \forall n \geq n_0 :
+f(n) \geq cg(n) \\
+f(n) \in \Theta(g(n)) &\iff \exists c, C, n_0 : \forall n \geq n_0 :
+cg(n) \leq f(n) \leq Cg(n) \\
+f(n) \in o(g(n)) &\iff \forall C : \exists n_0 : \forall v \geq n_0 :
+f(n) \leq Cg(n) \\
+f(n) \in \omega(g(n)) &\iff \forall c : \exists n_0 : \forall n \geq
+n_0 : f(n) \geq cg(n) \\
+\end{align*}
+
+% Algorithms are figures and setting H doesn't work in twocolumn mode
+% without hackery, so they'll just have to go wherever...
+
 \begin{algorithm}
   \caption{Depth-First Search}
   \Input{Graph \(G = (V,E)\), vertex \(v \in V\)}
@@ -178,5 +196,38 @@
   }
 
 \end{algorithm}
+
+\section{Complexity}
+
+\begin{tabular}{|l|c|}
+  \hline
+  Operation & Complexity \\
+  \hline
+  Depth-first search & \(O(|E| + |V|)\)\\
+  Breadth-first search & \(O(|E| + |V|)\)\\
+  Dijkstra's & \(O((|E| + |V|)\log|V|)\)\\
+  \dots with Fibonacci heap & \(O(|V|\log |V| + |E|)\)\\
+  Prim's & \(O(|E|\log|E|)\)\\
+  \dots with Fibonacci heap & \(O(|E| + |V|\log |V|)\)\\
+  Kruskal's & \(O(|E|\log|V|)\)\\
+  Ford-Fulkerson & \(O(v(f^*)|E|)\)\\
+  Maximum matching & \(O(|E||V|)\)\\
+  Bellman-Ford & \(O(|E||V|)\)\\
+  Simplex theoretical worst-case & \(\Theta(2^n)\)\\
+  Simplex practical complexity & \(\Theta(n)\)\\
+  \hline
+  \texttt{StartQueue} & \(O(n)\)\\
+  \(\texttt{Queue.Insert}(x, p)\) & \(O(\log n)\)\\
+  \texttt{Queue.Extract} & \(O(\log n)\)\\
+  \(\texttt{Queue.ChangeKey}(x, p)\) & \(O(\log n)\)\\
+  \hline
+  \texttt{MakeUnionFind} & \(O(n)\)\\
+  \texttt{Union} & \(O(\log n)\)\\
+  \(\texttt{FindSet}(x)\) & \(O(\log n)\)\\
+  \(n\) operations of \texttt{Union} and \texttt{FindSet} & \(O(n\log
+  n)\)\\
+  \dots with path-flattening & \(O(n \alpha(n))\)\\
+  \hline
+\end{tabular}
 
 \end{document}
