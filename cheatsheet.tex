@@ -165,6 +165,32 @@ n_0 : f(n) \geq cg(n) \\
 \end{algorithm}
 
 \begin{algorithm}
+  \caption{Weighted Interval Scheduling}
+  \Input{An \textbf{unsorted} array \(\mathcal{R}\) of \(n\) requests and
+    a weight function \(w\)}
+  \Output{A maximum-weight compatible subset of \(\mathcal{R}\)}
+
+  Sort \(\mathcal{R} \gets (s_1, f_1), \dots, (s_n, f_n)\) with \(f_1
+  \leq \cdots \leq f_n\)\;
+  \(\texttt{cache} \gets [\texttt{Null}] \times (n + 1)\)\;
+  \(\texttt{cache}[0] \gets \emptyset\)\;
+
+  \uFor{\(i = 1\) to \(n\)}{
+    Let \(p(i) \gets \max \{\{0\} \cup \{1 \leq j \leq i - 1 : f_j
+    \leq s_i \}\}\)\;
+    \(S_\text{out} \gets \texttt{cache}[i-1]\)\;
+    \(S_\text{in} \gets \texttt{cache}[p(i)] \cup \{(s_i, f_i)\}\)\;
+    \eIf{\(w(S_\text{out}) > w(S_\text{in})\)}{
+      \(\texttt{cache}[i] \gets S_\text{out}\)\;
+    }{
+      \(\texttt{cache}[i] \gets S_\text{in}\)\;
+    }
+  }
+
+  Return \(\texttt{cache}[n]\)\;
+\end{algorithm}
+
+\begin{algorithm}
   \caption{Bellman-Ford}
   \Input{A weighted digraph \(G = ((V, E), w)\) with no negative-weight
     cycles and vertices \(s, t \in V(G)\)}
