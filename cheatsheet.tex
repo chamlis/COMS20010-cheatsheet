@@ -66,13 +66,13 @@ n_0 : f(n) \geq cg(n) \\
   Let \(\text{L}[i] \gets \infty\) for all \(i \in [n]\)\;
   Let \(\text{L}[1] \gets 0\), \(\text{pred}[1] \gets \text{None}\)\;
   Let \texttt{queue} be a queue containing all tuples \((v, v_j)\)
-  with \({v, v_j} \in E\)\;
+  with \(\{v, v_j\} \in E\)\;
   \uWhile{\texttt{queue} is not empty}{
     Remove front tuple \((v_i, v_j)\) from \texttt{queue}\;
     \uIf{\(\text{L}[j] = \infty\)}{
-      Add \((v_j, v_k)\) to \texttt{queue} for all \({v_j, v_k} \in E,
+      Add \((v_j, v_k)\) to \texttt{queue} for all \(\{v_j, v_k\} \in E,
       k \neq i\)\;
-      Set \(\text{L}[j] \gets \text{L}[i] + 1\), \(text{pred}[j] = i\)\;
+      Set \(\text{L}[j] \gets \text{L}[i] + 1\), \(\text{pred}[j] = i\)\;
     }
   }
   Return L and pred\;
@@ -110,15 +110,15 @@ n_0 : f(n) \geq cg(n) \\
 
   Number the vertices of \(G\) arbitrarily as \(v_1, \dots, v_n\)\;
   Let \(\text{L}[i] \gets \infty\) for all \(i \in [n]\)\; Let
-  \(\text{L}[1] \gets 0\), \(\text{pred}[1] \gets \text{None}\)\; Let
-  \texttt{queue} be a length-\(|E|\) priority queue containing all
-  tuples \((v, v_j)\) with \({v, v_j} \in E\), using their edge
+  \(\text{L}[1] \gets 0\), \(\text{pred}[1] \gets \text{None}\)\;
+  Let \texttt{queue} be a length-\(|E|\) priority queue containing all
+  tuples \((v, v_j)\) with \(\{v, v_j\} \in E\), using their edge
   weights as priorities\;
 
   \uWhile{\texttt{queue} is not empty}{
     Remove front tuple \((v_i, v_j)\) from \texttt{queue}\;
     \uIf{\(\text{L}[j] = \infty\)}{
-      Add \((v_j, v_k)\) to \texttt{queue} for all \({v_j, v_k} \in E,
+      Add \((v_j, v_k)\) to \texttt{queue} for all \(\{v_j, v_k\} \in E,
       k \neq i\)\;
       Set \(\text{L}[j] \gets \text{L}[i] + 1\), \(\text{pred}[j] = i\)\;
     }
